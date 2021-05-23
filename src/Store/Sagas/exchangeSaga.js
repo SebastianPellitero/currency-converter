@@ -1,10 +1,10 @@
 import axios from "axios";
 import { all, call, put, takeLatest } from "redux-saga/effects";
 
-import {getDefaultData, fetchNewExchange } from '../Actions/exchangeActions'
-import { FETCH_DEFAULT_EXCHANGE, FETCH_EXCHANGE } from '../Actions/actionTypes'
+import { getCurrencyData, pendingCurrency } from '../Actions/exchangeActions'
+import { FETCH_DEFAULT_CURRENCY } from '../Actions/actionTypes'
 
-const getExchange = () => axios.get('http://api.exchangeratesapi.io/v1/latest?access_key=fb306a821e75fd43538ed3f6396a61e5', {
+const getCurrency = () => axios.get('http://api.exchangeratesapi.io/v1/latest?access_key=fb306a821e75fd43538ed3f6396a61e5', {
 	Accept: 'application/json',
 	'Content-Type': 'application/json',
 	'Csrf-Token': 'nocheck',
@@ -12,10 +12,11 @@ const getExchange = () => axios.get('http://api.exchangeratesapi.io/v1/latest?ac
 
 function* fetchExchangeData() {
   try {
-    const response = yield call(getExchange);
-    console.log(response.data)
+    const response = yield call(getCurrency);
+    yield put(pendingCurrency());
+    // console.log(response.data)
     yield put(
-      getDefaultData({
+      getCurrencyData({
         payload: response.data
       })
     );
@@ -25,7 +26,7 @@ function* fetchExchangeData() {
 }
 
 function* mergerSaga() {
-  yield all([takeLatest(FETCH_DEFAULT_EXCHANGE, fetchExchangeData)]);
+  yield all([takeLatest(FETCH_DEFAULT_CURRENCY, fetchExchangeData)]);
 }
 
 export default mergerSaga;

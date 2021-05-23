@@ -4,6 +4,7 @@ import Card from './Card';
 
 const mapStateToProps = state => {
   return {
+    currency: state.exchange
   };
 };
 

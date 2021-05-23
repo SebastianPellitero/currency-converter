@@ -1,15 +1,14 @@
-import {GET_DEFAULT_EXCHANGE, FETCH_DEFAULT_EXCHANGE, FETCH_EXCHANGE} from './actionTypes'
+import {GET_CURRENCY, FETCH_DEFAULT_CURRENCY, PENDING_CURRENCY} from './actionTypes'
 
 export const fetchDefault = () => ({
-      type: FETCH_DEFAULT_EXCHANGE
+      type: FETCH_DEFAULT_CURRENCY
 });
 
-export const getDefaultData = (exchange) => ({
-      type: GET_DEFAULT_EXCHANGE,
+export const pendingCurrency = () => ({
+      type: PENDING_CURRENCY
+});
+
+export const getCurrencyData = (exchange) => ({
+      type: GET_CURRENCY,
       exchange
 });
-
-export const fetchNewExchange = () => ({
-      type: FETCH_EXCHANGE,
-});
-

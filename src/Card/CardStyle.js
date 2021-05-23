@@ -13,5 +13,3 @@ export const StyledCard = styled.section`
     transform-style: preserve-3d;
     box-sizing: border-box;
 `;
-
-
