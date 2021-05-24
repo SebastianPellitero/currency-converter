@@ -1,7 +1,8 @@
-import {GET_CURRENCY, FETCH_DEFAULT_CURRENCY, PENDING_CURRENCY} from './actionTypes'
+import { GET_CURRENCY, FETCH_CURRENCY, PENDING_CURRENCY, FETCH_TIMESERIES, PENDING_TIMESERIES, GET_TIMESERIES, SET_TARGET_CURRENCY, TOGGLE_CHART } from './actionTypes'
 
-export const fetchDefault = () => ({
-      type: FETCH_DEFAULT_CURRENCY
+export const fetchCurrency = (currencySelected) => ({
+      type: FETCH_CURRENCY,
+      currencySelected
 });
 
 export const pendingCurrency = () => ({
@@ -11,4 +12,29 @@ export const pendingCurrency = () => ({
 export const getCurrencyData = (exchange) => ({
       type: GET_CURRENCY,
       exchange
+});
+
+export const asignTargetCurrency = (targetCurrency) => ({
+      type: SET_TARGET_CURRENCY,
+      targetCurrency
+})
+
+export const fetchChartData = (starDate,endDate, currencySelected, currencyTarget) => ({
+      type: FETCH_TIMESERIES,
+      starDate,endDate,currencySelected,currencyTarget
+});
+
+export const pendingChartData = () => ({
+      type: PENDING_TIMESERIES,
+});
+
+export const getTimeSeries = (timeSeries) => ({
+      type: GET_TIMESERIES,
+      timeSeries
+});
+
+
+export const toggleChart = (toggle) => ({
+      type: TOGGLE_CHART,
+      toggle
 });

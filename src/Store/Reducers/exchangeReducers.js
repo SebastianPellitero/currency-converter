@@ -1,10 +1,12 @@
-import { GET_CURRENCY, FETCH_DEFAULT_CURRENCY, PENDING_CURRENCY } from '../Actions/actionTypes'
+import { GET_CURRENCY, FETCH_CURRENCY, PENDING_CURRENCY, SET_TARGET_CURRENCY, TOGGLE_CHART } from '../Actions/actionTypes'
 
 const initialState = {
   status: 'Inicial',
   base: 'EUR',
   date: 0,
-  rates: []
+  rates: [],
+  toCurrency: '',
+  showChart: false
 }
 
 const currencyInfo = (state, payload) => {
@@ -14,13 +16,16 @@ const currencyInfo = (state, payload) => {
 
 export default function exchangeReducer(state = initialState, action) {
   switch (action.type) {
-    case FETCH_DEFAULT_CURRENCY:
+    case FETCH_CURRENCY:
       return state
     case PENDING_CURRENCY:
       return { ...state, status:'Pending'}
+    case SET_TARGET_CURRENCY: 
+      return { ...state, toCurrency: action.targetCurrency }
     case GET_CURRENCY:
       return currencyInfo(state,action.exchange.payload)
-      //return {...state, status: 'completed', ...action.exchange.payload}
+    case TOGGLE_CHART:
+      return { ...state, showChart: action.toggle}
     default:
       return state
   }
