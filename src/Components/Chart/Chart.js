@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react'
-import { VictoryChart, VictoryLine } from "victory";
+import React, { useEffect } from 'react';
+import { VictoryChart, VictoryLine } from 'victory';
 
 const Chart = props => {
     const { fetchTimeSerie, chartData } = props;
@@ -7,26 +7,29 @@ const Chart = props => {
 
     useEffect(() => {
         fetchTimeSerie();
-    },
-    [fetchTimeSerie]);
+    }, [fetchTimeSerie]);
 
     const ChartView = () => {
-        return (status === 'Complete') ?    
-        <VictoryChart scale={{ x: "time" }}>
-            <VictoryLine 
-                data={timeSeries} 
-            />
-        </VictoryChart>
-        :
-        <></>
-    }
+        return status === 'Complete' ? (
+            <VictoryChart scale={{ x: 'time' }}>
+                <VictoryLine data={timeSeries} />
+            </VictoryChart>
+        ) : (
+            <>LOADING....</>
+        );
+    };
 
     return (
         <>
-            <input type="date" onChange={e => {fetchTimeSerie(e.target.value)}} /> 
+            <input
+                type='date'
+                onChange={e => {
+                    fetchTimeSerie(e.target.value);
+                }}
+            />
             <ChartView />
         </>
-    )    
-}
+    );
+};
 
- export default Chart;
+export default Chart;
