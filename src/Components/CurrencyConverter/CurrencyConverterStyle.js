@@ -1,13 +1,20 @@
 import styled from 'styled-components';
+import { MEDIA_QUERIES_TABLET } from '../../constants';
 
 export const StyledForm = styled.form`
-    margin: 0 auto;
-    padding: 20px;
     display: flex;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-evenly;
-    width: 100%;
     box-sizing: border-box;
+    flex-direction: column;
+    padding: 20px;
+    margin: 0 auto;
+    width: 100%;
+
+    @media only screen and (min-width: ${MEDIA_QUERIES_TABLET}) {
+        flex-direction: row;
+        align-items: baseline;
+    }
 `;
 
 export const MainCurrencySection = styled.article`
@@ -15,7 +22,7 @@ export const MainCurrencySection = styled.article`
     flex-direction: column;
 
     button {
-        margin: 20px 0;
+        margin-top: 25px;
     }
 `;
 
@@ -45,13 +52,19 @@ export const StyledResult = styled.div`
     align-items: center;
     text-align: center;
     justify-content: space-evenly;
+    flex-direction: column;
+
+    @media only screen and (min-width: ${MEDIA_QUERIES_TABLET}) {
+        flex-direction: row;
+    }
+
     .from-currency {
         width: 40%;
         font-size: 18px;
         input {
             -webkit-appearance: none;
             -moz-appearance: textfield;
-            text-align: right;
+            text-align: center;
             margin-right: 5px;
             border: 0;
             padding: 5px 0 7px;
@@ -59,6 +72,10 @@ export const StyledResult = styled.div`
             border-bottom-color: #ccc;
             transition: 0.4s;
             font-size: 18px;
+
+            @media only screen and (min-width: ${MEDIA_QUERIES_TABLET}) {
+                text-align: right;
+            }
         }
         input:focus {
             padding: 5px 1px 7px;
@@ -67,6 +84,9 @@ export const StyledResult = styled.div`
     }
 
     .to-currency {
+        display: flex;
+        justify-content: center;
+        height: 53px;
         width: 40%;
     }
 `;

@@ -29,8 +29,8 @@ const showChart = state => state.exchange.showChart;
 function* fetchExchangeData(action) {
     try {
         const { currencySelected } = action;
-        const response = yield call(() => getCurrency(currencySelected));
         yield put(pendingCurrency());
+        const response = yield call(() => getCurrency(currencySelected));
         yield put(
             getCurrencyData({
                 payload: response.data
@@ -60,6 +60,7 @@ const getFromCurrency = state => state.exchange.base;
 function* fetchChartData(action) {
     try {
         const { starDate } = action;
+        yield put(pendingChartData());
         const toCurrency = yield select(getToCurrency);
         const currencySelected = yield select(getFromCurrency);
         const response = yield call(() =>
@@ -70,7 +71,6 @@ function* fetchChartData(action) {
                 toCurrency
             )
         );
-        yield put(pendingChartData());
         yield put(
             getTimeSeries({
                 payload: response.data

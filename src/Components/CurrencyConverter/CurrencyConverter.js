@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { DEFAULT_CURRENCY_VALUE, CLOSE_CHART, OPEN_CHART } from '../../constants';
+import {
+    DEFAULT_CURRENCY_VALUE,
+    CLOSE_CHART,
+    OPEN_CHART,
+    DEFAULT_CURRENCY_AMOUNT,
+    WHITE_GRAY_COLOR,
+    SPINNER_TYPE_BUBBLE
+} from '../../constants';
 import {
     StyledForm,
     StyledSelect,
@@ -7,43 +14,61 @@ import {
     MainCurrencySection,
     StyledToggleButton
 } from './CurrencyConverterStyle';
+import ReactLoading from 'react-loading';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const CurrencyConverter = props => {
     const { fetchCurrency, asignTargetCurrency, fetchTimeSerie, toggleChart } =
         props;
-    const { rates, showChart } = props.currency;
     const [fromCurrency, setFromCurrency] = useState(DEFAULT_CURRENCY_VALUE);
     const [toCurrency, setToCurrency] = useState('');
-    const [amountCurrency, setAmountCurrency] = useState(1);
+    const [amountCurrency, setAmountCurrency] = useState(DEFAULT_CURRENCY_AMOUNT);
 
     useEffect(() => {
         fetchCurrency();
     }, [fetchCurrency]);
 
     const showComparedCurrency = () => {
+        const { formatMessage } = props.intl;
+        const { isLoading, rates, showChart } = props.currency;
         return toCurrency ? (
             <>
                 <StyledResult>
-                    <div className='from-currency'>
+                    <p className='from-currency'>
                         <input
                             type='number'
+                            min='1'
                             value={amountCurrency}
-                            onChange={e => setAmountCurrency(e.target.valueAsNumber)}
+                            placeholder='Enter a value grater than 0'
+                            onChange={e =>
+                                setAmountCurrency(
+                                    e.target.valueAsNumber || DEFAULT_CURRENCY_AMOUNT
+                                )
+                            }
                         />
                         {fromCurrency}
-                    </div>
+                    </p>
                     <div className='text-currency'>=</div>
                     <div className='to-currency'>
-                        {rates[toCurrency] * amountCurrency} {toCurrency}
+                        {isLoading ? (
+                            <ReactLoading
+                                type={SPINNER_TYPE_BUBBLE}
+                                color={WHITE_GRAY_COLOR}
+                            />
+                        ) : (
+                            <p>
+                                {rates[toCurrency] * amountCurrency} {toCurrency}
+                            </p>
+                        )}
                     </div>
                 </StyledResult>
                 {showChart ? (
                     <StyledToggleButton onClick={() => toggleChart(CLOSE_CHART)}>
-                        Close chart
+                        {formatMessage({ id: 'chart.closeButton' })}
                     </StyledToggleButton>
                 ) : (
                     <StyledToggleButton onClick={() => toggleChart(OPEN_CHART)}>
-                        Go to chart
+                        {formatMessage({ id: 'chart.openButton' })}
                     </StyledToggleButton>
                 )}
             </>
@@ -58,24 +83,26 @@ const CurrencyConverter = props => {
     };
 
     const selectFromCurrency = () => {
-        const { status, rates } = props.currency;
-        if (status === 'Complete') {
-            let algo = Object.keys(rates);
+        const { rates, isLoading } = props.currency;
+        if (isLoading)
             return (
-                <>
-                    <p>From: </p>
-                    <StyledSelect
-                        value={fromCurrency}
-                        onChange={e => handleOnChangeFromCurrency(e.target.value)}
-                    >
-                        {algo.map((value, i) => (
-                            <option key={i}>{value}</option>
-                        ))}
-                    </StyledSelect>
-                </>
+                <ReactLoading type={SPINNER_TYPE_BUBBLE} color={WHITE_GRAY_COLOR} />
             );
-        }
-        return <p>PENDINGGGGG</p>;
+        return (
+            <>
+                <p>
+                    <FormattedMessage id='currencyConverter.fromText' />
+                </p>
+                <StyledSelect
+                    value={fromCurrency}
+                    onChange={e => handleOnChangeFromCurrency(e.target.value)}
+                >
+                    {Object.keys(rates).map((value, i) => (
+                        <option key={i}>{value}</option>
+                    ))}
+                </StyledSelect>
+            </>
+        );
     };
 
     const handleOnChangeToCurrency = currencySelected => {
@@ -86,25 +113,28 @@ const CurrencyConverter = props => {
     };
 
     const selectToCurrency = () => {
-        const { status, rates } = props.currency;
-        if (status === 'Complete') {
-            let algo = Object.keys(rates);
-            return (
-                <>
-                    <p>To: </p>
-                    <StyledSelect
-                        value={toCurrency}
-                        onChange={e => handleOnChangeToCurrency(e.target.value)}
-                    >
-                        <option value=''>--Please choose an option--</option>
-                        {algo.map((value, i) => (
-                            <option key={i}>{value}</option>
-                        ))}
-                    </StyledSelect>
-                </>
-            );
-        }
-        return <p>PENDINGGGGG</p>;
+        const { formatMessage } = props.intl;
+        const { rates, isLoading } = props.currency;
+        if (isLoading)
+            return <ReactLoading type={'bubbles'} color={WHITE_GRAY_COLOR} />;
+        return (
+            <>
+                <p>
+                    <FormattedMessage id='currencyConverter.toText' />
+                </p>
+                <StyledSelect
+                    value={toCurrency}
+                    onChange={e => handleOnChangeToCurrency(e.target.value)}
+                >
+                    <option value=''>
+                        {formatMessage({ id: 'currencyConverter.toSelectDefault' })}{' '}
+                    </option>
+                    {Object.keys(rates).map((value, i) => (
+                        <option key={i}>{value}</option>
+                    ))}
+                </StyledSelect>
+            </>
+        );
     };
 
     return (
@@ -118,4 +148,4 @@ const CurrencyConverter = props => {
     );
 };
 
-export default CurrencyConverter;
+export default injectIntl(CurrencyConverter);

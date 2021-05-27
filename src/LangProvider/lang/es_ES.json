@@ -1,0 +1,8 @@
+{
+    "chart.datePickerText": "Elige una fecha de inicio: ",
+    "chart.openButton": "Ir al Grafico",
+    "chart.closeButton": "Cerrar Grafico",
+    "currencyConverter.fromText": "De: ",
+    "currencyConverter.toText": "A: ",
+    "currencyConverter.toSelectDefault": "--Elije una opcion--"
+}

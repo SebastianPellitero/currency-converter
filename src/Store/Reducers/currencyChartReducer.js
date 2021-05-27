@@ -1,12 +1,9 @@
-import {
-    FETCH_TIMESERIES,
-    PENDING_TIMESERIES,
-    GET_TIMESERIES
-} from '../Actions/actionTypes';
+import { PENDING_TIMESERIES, GET_TIMESERIES } from '../Actions/actionTypes';
 
 const initialState = {
-    status: 'Inicial',
-    base: 'EUR'
+    isLoading: false,
+    base: 'EUR',
+    timeSeries: []
 };
 
 const timeSerieNormalization = (state, action) => {
@@ -16,15 +13,13 @@ const timeSerieNormalization = (state, action) => {
     Object.entries(rates).forEach(([key, value]) =>
         chobi.push({ x: new Date(key), y: Object.values(value)[0] })
     );
-    return { ...state, timeSeries: chobi, status: 'Complete' };
+    return { ...state, timeSeries: chobi, isLoading: false };
 };
 
 export default function exchangeReducer(state = initialState, action) {
     switch (action.type) {
-        case FETCH_TIMESERIES:
-            return state;
         case PENDING_TIMESERIES:
-            return { ...state, status: 'Pending' };
+            return { ...state, isLoading: true };
         case GET_TIMESERIES:
             return timeSerieNormalization(state, action);
         default:
