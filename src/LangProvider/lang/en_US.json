@@ -2,6 +2,7 @@
     "chart.datePickerText": "Choose a starting date: ",
     "chart.openButton": "Go to chart",
     "chart.closeButton": "Close chart",
+    "chart.title": "Currency value by time",
     "currencyConverter.fromText": "From: ",
     "currencyConverter.toText": "To: ",
     "currencyConverter.toSelectDefault": "--Please choose an option--"

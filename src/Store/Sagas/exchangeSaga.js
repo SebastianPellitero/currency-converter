@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { DEFAULT_CURRENCY_VALUE } from '../../constants';
 import { all, call, put, takeLatest, select } from 'redux-saga/effects';
+import { DEFAULT_CURRENCY_VALUE } from '../../constants';
 
 import {
     getCurrencyData,
@@ -14,6 +14,7 @@ const getCurrency = (currencySelected = DEFAULT_CURRENCY_VALUE) =>
     axios.get('https://api.exchangerate.host/latest', {
         params: { base: currencySelected }
     });
+
 const getChartData = (fromDate, toDate, currencySelected, currencyTarget = 'USD') =>
     axios.get('https://api.exchangerate.host/timeseries', {
         params: {
@@ -48,12 +49,12 @@ const handleEndDate = () => {
     return todayDate.toJSON().slice(0, 10);
 };
 
-const handleStartDate = starDate => {
-    let todayDate = new Date();
+const handleStartDate = (storeStartDate, starDate) => {
     if (starDate) return starDate;
-    return new Date(todayDate.setDate(-30)).toJSON().slice(0, 10);
+    return storeStartDate;
 };
 
+const getStartingDate = state => state.chartData.startingDate;
 const getToCurrency = state => state.exchange.toCurrency;
 const getFromCurrency = state => state.exchange.base;
 
@@ -63,9 +64,10 @@ function* fetchChartData(action) {
         yield put(pendingChartData());
         const toCurrency = yield select(getToCurrency);
         const currencySelected = yield select(getFromCurrency);
+        const storeStartingDate = yield select(getStartingDate);
         const response = yield call(() =>
             getChartData(
-                handleStartDate(starDate),
+                handleStartDate(storeStartingDate, starDate),
                 handleEndDate(),
                 currencySelected,
                 toCurrency

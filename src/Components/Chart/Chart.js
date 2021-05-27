@@ -1,18 +1,26 @@
-import React, { useEffect } from 'react';
-import { VictoryChart, VictoryLine } from 'victory';
+import React, { useEffect, useState } from 'react';
+import { VictoryChart, VictoryLine, VictoryLabel } from 'victory';
 import { StyledDatePicker, StyledChartContainer } from './ChartStyle';
 import ReactLoading from 'react-loading';
-import { WHITE_GRAY_COLOR, SPINNER_TYPE_SPOKES } from '../../constants';
-import { FormattedMessage } from 'react-intl';
+import {
+    WHITE_GRAY_COLOR,
+    SPINNER_TYPE_SPOKES,
+    DEFAULT_STARTING_DATE
+} from '../../constants';
+import { FormattedMessage, injectIntl } from 'react-intl';
 
 const Chart = props => {
-    const { fetchTimeSerie, chartData } = props;
+    const { fetchTimeSerie, setChartTime } = props;
+    const { formatMessage } = props.intl;
+
+    const [startingDate, setStartingDate] = useState(DEFAULT_STARTING_DATE);
 
     useEffect(() => {
         fetchTimeSerie();
     }, [fetchTimeSerie]);
 
     const ChartView = () => {
+        const { chartData } = props;
         const { timeSeries, isLoading } = chartData;
         return (
             <StyledChartContainer>
@@ -23,6 +31,14 @@ const Chart = props => {
                     />
                 ) : (
                     <VictoryChart height={250} width={500} scale={{ x: 'time' }}>
+                        <VictoryLabel
+                            text={formatMessage({
+                                id: 'chart.title'
+                            })}
+                            x={225}
+                            y={30}
+                            textAnchor='middle'
+                        />
                         <VictoryLine data={timeSeries} />
                     </VictoryChart>
                 )}
@@ -35,9 +51,13 @@ const Chart = props => {
             <StyledDatePicker>
                 <FormattedMessage id='chart.datePickerText' />
                 <input
+                    value={startingDate}
                     type='date'
+                    aria-label='chart-date-input'
                     onChange={e => {
+                        setStartingDate(e.target.value);
                         fetchTimeSerie(e.target.value);
+                        setChartTime(e.target.value);
                     }}
                 />
             </StyledDatePicker>
@@ -46,4 +66,4 @@ const Chart = props => {
     );
 };
 
-export default Chart;
+export default injectIntl(Chart);

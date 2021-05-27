@@ -1,60 +1,52 @@
-import {
-    FETCH_TIMESERIES,
-    PENDING_TIMESERIES,
-    GET_TIMESERIES
-} from '../Actions/actionTypes';
-import exchangeReducer from './exchangeReducers';
+import { PENDING_TIMESERIES, GET_TIMESERIES } from '../Actions/actionTypes';
+import currencyChartReducer from './currencyChartReducer';
+
+const mockTimeSeries = {
+    payload: {
+        rates: {
+            '2021-03-03': { ANG: 2 },
+            '2021-03-10': { ANG: 5 }
+        }
+    }
+};
+
+const mockProcessedTimeSeries = [
+    { x: new Date('2021-03-03'), y: 2 },
+    { x: new Date('2021-03-10'), y: 5 }
+];
 
 describe('Currency Chart Reducer', () => {
     it('should return the initial state', () => {
-        expect(exchangeReducer(undefined, {})).toEqual([
-            {
-                isLoading: false,
-                base: 'EUR',
-                timeSeries: []
-            }
-        ]);
+        expect(currencyChartReducer(undefined, {})).toEqual({
+            isLoading: false,
+            base: 'EUR',
+            timeSeries: []
+        });
     });
 
-    it('should handle ADD_TODO', () => {
+    it('should handle PENDING_TIMESERIES', () => {
         expect(
-            exchangeReducer([], {
-                type: FETCH_TIMESERIES,
-                text: 'Run the tests'
+            currencyChartReducer(undefined, {
+                type: PENDING_TIMESERIES,
+                isLoading: true
             })
-        ).toEqual([
-            {
-                text: 'Run the tests',
-                completed: false,
-                id: 0
-            }
-        ]);
+        ).toEqual({
+            isLoading: true,
+            base: 'EUR',
+            timeSeries: []
+        });
+    });
 
+    it('should handle GET_TIMESERIES', () => {
         expect(
-            exchangeReducer(
-                [
-                    {
-                        text: 'Use Redux',
-                        completed: false,
-                        id: 0
-                    }
-                ],
-                {
-                    type: GET_TIMESERIES,
-                    text: 'Run the tests'
-                }
-            )
-        ).toEqual([
-            {
-                text: 'Run the tests',
-                completed: false,
-                id: 1
-            },
-            {
-                text: 'Use Redux',
-                completed: false,
-                id: 0
-            }
-        ]);
+            currencyChartReducer(undefined, {
+                type: GET_TIMESERIES,
+                timeSeries: mockTimeSeries
+            })
+        ).toEqual({
+            isLoading: false,
+            base: 'EUR',
+            timeSeries: mockProcessedTimeSeries
+        });
     });
 });

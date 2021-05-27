@@ -6,7 +6,8 @@ import {
     PENDING_TIMESERIES,
     GET_TIMESERIES,
     SET_TARGET_CURRENCY,
-    TOGGLE_CHART
+    TOGGLE_CHART,
+    SET_DATE_TIMESERIES
 } from './actionTypes';
 
 export const fetchCurrency = currencySelected => ({
@@ -53,4 +54,9 @@ export const getTimeSeries = timeSeries => ({
 export const toggleChart = toggle => ({
     type: TOGGLE_CHART,
     toggle
+});
+
+export const setChartTime = startTime => ({
+    type: SET_DATE_TIMESERIES,
+    startTime
 });

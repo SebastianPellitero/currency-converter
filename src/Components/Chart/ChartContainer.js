@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { fetchChartData } from '../../Store/Actions/exchangeActions';
+import { fetchChartData, setChartTime } from '../../Store/Actions/exchangeActions';
 import Chart from './Chart';
 
 const mapStateToProps = state => {
@@ -10,7 +10,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        fetchTimeSerie: starDate => dispatch(fetchChartData(starDate))
+        fetchTimeSerie: starDate => dispatch(fetchChartData(starDate)),
+        setChartTime: starDate => dispatch(setChartTime(starDate))
     };
 };
 

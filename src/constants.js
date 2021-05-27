@@ -1,5 +1,6 @@
 export const DEFAULT_CURRENCY_VALUE = 'EUR';
 export const DEFAULT_CURRENCY_AMOUNT = 1;
+export const DEFAULT_STARTING_DATE = '2021-01-01';
 export const CLOSE_CHART = false;
 export const OPEN_CHART = true;
 export const SPINNER_TYPE_BUBBLE = 'bubbles';
