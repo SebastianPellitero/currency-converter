@@ -3,11 +3,11 @@ import {
     GET_TIMESERIES,
     SET_DATE_TIMESERIES
 } from '../Actions/actionTypes';
-import { DEFAULT_STARTING_DATE } from '../../constants';
+import { DEFAULT_STARTING_DATE, DEFAULT_CURRENCY_VALUE } from '../../constants';
 
-const initialState = {
+export const initialState = {
     isLoading: false,
-    base: 'EUR',
+    base: DEFAULT_CURRENCY_VALUE,
     timeSeries: [],
     startingDate: DEFAULT_STARTING_DATE
 };

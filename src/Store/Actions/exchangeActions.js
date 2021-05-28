@@ -51,9 +51,8 @@ export const getTimeSeries = timeSeries => ({
     timeSeries
 });
 
-export const toggleChart = toggle => ({
-    type: TOGGLE_CHART,
-    toggle
+export const toggleChart = () => ({
+    type: TOGGLE_CHART
 });
 
 export const setChartTime = startTime => ({

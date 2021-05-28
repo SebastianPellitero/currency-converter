@@ -18,7 +18,7 @@ const mapDispatchToProps = dispatch => {
         fetchCurrency: currencySelected => dispatch(fetchCurrency(currencySelected)),
         asignTargetCurrency: toCurrency => dispatch(asignTargetCurrency(toCurrency)),
         fetchTimeSerie: starDate => dispatch(fetchChartData(starDate)),
-        toggleChart: toggle => dispatch(toggleChart(toggle))
+        toggleChart: () => dispatch(toggleChart())
     };
 };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { VictoryChart, VictoryLine, VictoryLabel } from 'victory';
-import { StyledDatePicker, StyledChartContainer } from './ChartStyle';
+import { StyledDatePicker, StyledChart } from './ChartStyle';
 import ReactLoading from 'react-loading';
 import {
     WHITE_GRAY_COLOR,
@@ -20,10 +20,12 @@ const Chart = props => {
     }, [fetchTimeSerie]);
 
     const ChartView = () => {
-        const { chartData } = props;
-        const { timeSeries, isLoading } = chartData;
+        const {
+            chartData: { timeSeries, isLoading }
+        } = props;
+
         return (
-            <StyledChartContainer>
+            <StyledChart>
                 {isLoading ? (
                     <ReactLoading
                         type={SPINNER_TYPE_SPOKES}
@@ -42,7 +44,7 @@ const Chart = props => {
                         <VictoryLine data={timeSeries} />
                     </VictoryChart>
                 )}
-            </StyledChartContainer>
+            </StyledChart>
         );
     };
 
@@ -61,7 +63,7 @@ const Chart = props => {
                     }}
                 />
             </StyledDatePicker>
-            <ChartView className='chart' />
+            <ChartView />
         </>
     );
 };

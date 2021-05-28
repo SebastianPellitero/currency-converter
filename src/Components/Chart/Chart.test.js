@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Chart from './Chart';
-import { IntlProvider } from 'react-intl';
-import getCurrentLang from '../../LangProvider/langProvider';
 import jest from 'jest-mock';
-
+import { IntlProvider } from 'react-intl';
 import { cleanup, render } from '@testing-library/react';
+import Chart from './Chart';
+import getCurrentLang from '../../LangProvider/langProvider';
+import { DEFAULT_STARTING_DATE } from '../../constants';
 
 afterEach(cleanup);
 
@@ -60,7 +60,7 @@ const setup = () => {
 it('The component render a data input and default chart', () => {
     const containerRendered = setup();
     const input = containerRendered.getByLabelText('chart-date-input');
-    expect(input.value).toBe('');
+    expect(input.value).toBe(DEFAULT_STARTING_DATE);
     const chart = containerRendered.getByText('Currency value by time');
     expect(chart).toBeDefined();
 });

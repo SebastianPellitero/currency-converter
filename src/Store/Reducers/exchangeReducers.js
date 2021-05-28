@@ -4,10 +4,11 @@ import {
     SET_TARGET_CURRENCY,
     TOGGLE_CHART
 } from '../Actions/actionTypes';
+import { DEFAULT_CURRENCY_VALUE } from '../../constants';
 
 const initialState = {
     isLoading: false,
-    base: 'EUR',
+    base: DEFAULT_CURRENCY_VALUE,
     date: 0,
     rates: [],
     toCurrency: '',
@@ -28,7 +29,7 @@ export default function exchangeReducer(state = initialState, action) {
         case GET_CURRENCY:
             return currencyInfo(state, action.exchange.payload);
         case TOGGLE_CHART:
-            return { ...state, showChart: action.toggle };
+            return { ...state, showChart: !state.showChart };
         default:
             return state;
     }

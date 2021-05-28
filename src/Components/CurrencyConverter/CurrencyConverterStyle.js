@@ -1,5 +1,12 @@
 import styled from 'styled-components';
-import { MEDIA_QUERIES_TABLET } from '../../constants';
+import {
+    MEDIA_QUERIES_TABLET,
+    WHITE_COLOR,
+    WHITE_GRAY_COLOR,
+    BLACK_COLOR,
+    LIGHT_GRAY_COLOR,
+    GHOST_GRAY_COLOR
+} from '../../constants';
 
 export const StyledForm = styled.form`
     display: flex;
@@ -20,17 +27,13 @@ export const StyledForm = styled.form`
 export const MainCurrencySection = styled.article`
     display: flex;
     flex-direction: column;
-
-    button {
-        margin-top: 25px;
-    }
 `;
 
 export const StyledSelect = styled.select`
     width: 100%;
     height: 35px;
-    background: #ffffff;
-    color: #808080;
+    background: ${WHITE_COLOR};
+    color: ${WHITE_GRAY_COLOR};
     padding-left: 5px;
     font-size: 14px;
     border: none;
@@ -38,8 +41,8 @@ export const StyledSelect = styled.select`
     width: 300px;
 
     option {
-        color: black;
-        background: white;
+        color: ${BLACK_COLOR};
+        background: ${WHITE_COLOR};
         display: flex;
         white-space: pre;
         min-height: 20px;
@@ -66,10 +69,9 @@ export const StyledResult = styled.div`
             -moz-appearance: textfield;
             text-align: center;
             margin-right: 5px;
-            border: 0;
             padding: 5px 0 7px;
             border: 1px solid transparent;
-            border-bottom-color: #ccc;
+            border-bottom-color: ${LIGHT_GRAY_COLOR};
             transition: 0.4s;
             font-size: 18px;
 
@@ -92,7 +94,8 @@ export const StyledResult = styled.div`
 `;
 
 export const StyledToggleButton = styled.button`
-    background-color: ghostwhite;
+    background-color: ${GHOST_GRAY_COLOR};
     border: none;
     padding: 15px 32px;
+    margin-top: 25px;
 `;

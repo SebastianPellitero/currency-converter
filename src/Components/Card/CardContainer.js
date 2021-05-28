@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { fetchCurrency, fetchChartData } from '../../Store/Actions/exchangeActions';
 import Card from './Card';
 
 const mapStateToProps = state => {
@@ -8,16 +7,6 @@ const mapStateToProps = state => {
     };
 };
 
-const mapDispatchToProps = dispatch => {
-    return {
-        fetchCurrency: currencySelected => dispatch(fetchCurrency(currencySelected)),
-        fetchTimeSerie: (starDate, endDate, currencySelected, currencyTarget) =>
-            dispatch(
-                fetchChartData(starDate, endDate, currencySelected, currencyTarget)
-            )
-    };
-};
-
-const CardContainer = connect(mapStateToProps, mapDispatchToProps)(Card);
+const CardContainer = connect(mapStateToProps)(Card);
 
 export default CardContainer;

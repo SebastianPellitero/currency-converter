@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
     DEFAULT_CURRENCY_VALUE,
-    CLOSE_CHART,
-    OPEN_CHART,
     DEFAULT_CURRENCY_AMOUNT,
     WHITE_GRAY_COLOR,
     SPINNER_TYPE_BUBBLE
@@ -29,8 +27,10 @@ const CurrencyConverter = props => {
     }, [fetchCurrency]);
 
     const showComparedCurrency = () => {
-        const { formatMessage } = props.intl;
-        const { isLoading, rates, showChart } = props.currency;
+        const {
+            currency: { isLoading, rates, showChart },
+            intl: { formatMessage }
+        } = props;
         return toCurrency ? (
             <>
                 <StyledResult>
@@ -39,7 +39,6 @@ const CurrencyConverter = props => {
                             type='number'
                             min='1'
                             value={amountCurrency}
-                            placeholder='Enter a value grater than 0'
                             onChange={e =>
                                 setAmountCurrency(
                                     e.target.valueAsNumber || DEFAULT_CURRENCY_AMOUNT
@@ -62,19 +61,13 @@ const CurrencyConverter = props => {
                         )}
                     </div>
                 </StyledResult>
-                {showChart ? (
-                    <StyledToggleButton onClick={() => toggleChart(CLOSE_CHART)}>
-                        {formatMessage({ id: 'chart.closeButton' })}
-                    </StyledToggleButton>
-                ) : (
-                    <StyledToggleButton onClick={() => toggleChart(OPEN_CHART)}>
-                        {formatMessage({ id: 'chart.openButton' })}
-                    </StyledToggleButton>
-                )}
+                <StyledToggleButton onClick={() => toggleChart()}>
+                    {showChart
+                        ? formatMessage({ id: 'chart.closeButton' })
+                        : formatMessage({ id: 'chart.openButton' })}
+                </StyledToggleButton>
             </>
-        ) : (
-            <></>
-        );
+        ) : null;
     };
 
     const handleOnChangeFromCurrency = currencySelected => {
@@ -83,17 +76,20 @@ const CurrencyConverter = props => {
     };
 
     const selectFromCurrency = () => {
-        const { rates, isLoading } = props.currency;
+        const {
+            currency: { rates, isLoading }
+        } = props;
         if (isLoading)
             return (
                 <ReactLoading type={SPINNER_TYPE_BUBBLE} color={WHITE_GRAY_COLOR} />
             );
         return (
             <>
-                <p>
+                <label htmlFor='from-currency'>
                     <FormattedMessage id='currencyConverter.fromText' />
-                </p>
+                </label>
                 <StyledSelect
+                    id='from-currency'
                     value={fromCurrency}
                     onChange={e => handleOnChangeFromCurrency(e.target.value)}
                 >
@@ -106,28 +102,35 @@ const CurrencyConverter = props => {
     };
 
     const handleOnChangeToCurrency = currencySelected => {
-        const { showChart } = props.currency;
+        const {
+            currency: { showChart }
+        } = props;
         setToCurrency(currencySelected);
         asignTargetCurrency(currencySelected);
         if (showChart) fetchTimeSerie();
     };
 
     const selectToCurrency = () => {
-        const { formatMessage } = props.intl;
-        const { rates, isLoading } = props.currency;
+        const {
+            currency: { rates, isLoading },
+            intl: { formatMessage }
+        } = props;
         if (isLoading)
-            return <ReactLoading type={'bubbles'} color={WHITE_GRAY_COLOR} />;
+            return (
+                <ReactLoading type={SPINNER_TYPE_BUBBLE} color={WHITE_GRAY_COLOR} />
+            );
         return (
             <>
-                <p>
+                <label htmlFor='to-currency'>
                     <FormattedMessage id='currencyConverter.toText' />
-                </p>
+                </label>
                 <StyledSelect
+                    id='to-currency'
                     value={toCurrency}
                     onChange={e => handleOnChangeToCurrency(e.target.value)}
                 >
                     <option value=''>
-                        {formatMessage({ id: 'currencyConverter.toSelectDefault' })}{' '}
+                        {formatMessage({ id: 'currencyConverter.toSelectDefault' })}
                     </option>
                     {Object.keys(rates).map((value, i) => (
                         <option key={i}>{value}</option>

@@ -1,5 +1,6 @@
 import { PENDING_TIMESERIES, GET_TIMESERIES } from '../Actions/actionTypes';
-import currencyChartReducer from './currencyChartReducer';
+import currencyChartReducer, { initialState } from './currencyChartReducer';
+import { DEFAULT_STARTING_DATE } from '../../constants';
 
 const mockTimeSeries = {
     payload: {
@@ -17,11 +18,7 @@ const mockProcessedTimeSeries = [
 
 describe('Currency Chart Reducer', () => {
     it('should return the initial state', () => {
-        expect(currencyChartReducer(undefined, {})).toEqual({
-            isLoading: false,
-            base: 'EUR',
-            timeSeries: []
-        });
+        expect(currencyChartReducer(undefined, {})).toEqual(initialState);
     });
 
     it('should handle PENDING_TIMESERIES', () => {
@@ -33,7 +30,8 @@ describe('Currency Chart Reducer', () => {
         ).toEqual({
             isLoading: true,
             base: 'EUR',
-            timeSeries: []
+            timeSeries: [],
+            startingDate: DEFAULT_STARTING_DATE
         });
     });
 
@@ -46,7 +44,8 @@ describe('Currency Chart Reducer', () => {
         ).toEqual({
             isLoading: false,
             base: 'EUR',
-            timeSeries: mockProcessedTimeSeries
+            timeSeries: mockProcessedTimeSeries,
+            startingDate: DEFAULT_STARTING_DATE
         });
     });
 });

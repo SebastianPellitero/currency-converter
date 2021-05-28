@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { all, call, put, takeLatest, select } from 'redux-saga/effects';
-import { DEFAULT_CURRENCY_VALUE } from '../../constants';
+import { DEFAULT_CURRENCY_VALUE, DEFAULT_TARGET_VALUE } from '../../constants';
 
 import {
     getCurrencyData,
@@ -15,7 +15,12 @@ const getCurrency = (currencySelected = DEFAULT_CURRENCY_VALUE) =>
         params: { base: currencySelected }
     });
 
-const getChartData = (fromDate, toDate, currencySelected, currencyTarget = 'USD') =>
+const getChartData = (
+    fromDate,
+    toDate,
+    currencySelected,
+    currencyTarget = DEFAULT_TARGET_VALUE
+) =>
     axios.get('https://api.exchangerate.host/timeseries', {
         params: {
             base: currencySelected,
@@ -49,11 +54,6 @@ const handleEndDate = () => {
     return todayDate.toJSON().slice(0, 10);
 };
 
-const handleStartDate = (storeStartDate, starDate) => {
-    if (starDate) return starDate;
-    return storeStartDate;
-};
-
 const getStartingDate = state => state.chartData.startingDate;
 const getToCurrency = state => state.exchange.toCurrency;
 const getFromCurrency = state => state.exchange.base;
@@ -67,7 +67,7 @@ function* fetchChartData(action) {
         const storeStartingDate = yield select(getStartingDate);
         const response = yield call(() =>
             getChartData(
-                handleStartDate(storeStartingDate, starDate),
+                starDate || storeStartingDate,
                 handleEndDate(),
                 currencySelected,
                 toCurrency
